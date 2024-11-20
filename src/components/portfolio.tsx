@@ -11,11 +11,17 @@ import {
 } from 'lucide-react';
 
 export function PortfolioComponent() {
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState<string>('home');
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'experience', 'education', 'projects'];
+      const sections: string[] = [
+        'home',
+        'about',
+        'experience',
+        'education',
+        'projects',
+      ];
       const currentSection = sections.find((section) => {
         const element = document.getElementById(section);
         if (element) {
@@ -43,6 +49,7 @@ export function PortfolioComponent() {
                 <li key={item}>
                   <a
                     href={`#${item.toLowerCase()}`}
+                    aria-label={`Navigate to ${item}`}
                     className={`hover:text-blue-200 transition-colors ${
                       activeSection === item.toLowerCase() ? 'font-bold' : ''
                     }`}
@@ -72,19 +79,19 @@ export function PortfolioComponent() {
             <div className="flex justify-center space-x-4">
               <SocialLink
                 href="https://github.com/mikusmikus"
-                icon={<Github />}
+                icon={<Github aria-label="GitHub Profile" />}
               />
               <SocialLink
                 href="https://www.linkedin.com/in/mikus-meikulis/"
-                icon={<Linkedin />}
+                icon={<Linkedin aria-label="LinkedIn Profile" />}
               />
               <SocialLink
                 href="https://www.facebook.com/mikus.meikulis"
-                icon={<Facebook />}
+                icon={<Facebook aria-label="Facebook Profile" />}
               />
               <SocialLink
                 href="https://www.instagram.com/mikusmeikulis/"
-                icon={<Instagram />}
+                icon={<Instagram aria-label="Instagram Profile" />}
               />
             </div>
           </motion.div>
@@ -98,10 +105,10 @@ export function PortfolioComponent() {
             transition={{ duration: 0.5 }}
             className="text-lg text-gray-700"
           >
-            I'm a passionate Frontend Developer with over 3 years of experience,
-            specializing in TypeScript and React.js. I enjoy creating responsive
-            and user-friendly web applications, always striving to learn and
-            implement the latest technologies.
+            I&apos;m a passionate Frontend Developer with over 3 years of
+            experience, specializing in TypeScript and React.js. I enjoy
+            creating responsive and user-friendly web applications, always
+            striving to learn and implement the latest technologies.
           </motion.p>
         </section>
 
@@ -117,7 +124,6 @@ export function PortfolioComponent() {
               position="Frontend Developer"
               duration="Jul 2021 - Present · 3 yrs 5 mos"
               location="Riga, Latvia · Hybrid"
-              skills={['TypeScript', 'React.js']}
             />
             <ExperienceItem
               company="BORN DIGITAL Latvia"
@@ -146,7 +152,7 @@ export function PortfolioComponent() {
               Rīgas Tehniskā universitāte (Riga Technical University)
             </h3>
             <p className="text-gray-600">
-              Bachelor's degree, Financial Engineering
+              Bachelor&apos;s degree, Financial Engineering
             </p>
             <p className="text-gray-600">2013 - 2017</p>
           </motion.div>
@@ -188,7 +194,12 @@ export function PortfolioComponent() {
   );
 }
 
-function SocialLink({ href, icon }) {
+interface SocialLinkProps {
+  href: string;
+  icon: JSX.Element;
+}
+
+function SocialLink({ href, icon }: SocialLinkProps) {
   return (
     <a
       href={href}
@@ -201,13 +212,21 @@ function SocialLink({ href, icon }) {
   );
 }
 
+interface ExperienceItemProps {
+  company: string;
+  position: string;
+  duration: string;
+  location: string;
+  skills?: string[];
+}
+
 function ExperienceItem({
   company,
   position,
   duration,
   location,
   skills = [],
-}) {
+}: ExperienceItemProps) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
       <h3 className="text-xl font-semibold">{company}</h3>
@@ -230,7 +249,12 @@ function ExperienceItem({
   );
 }
 
-function ProjectCard({ title, url }) {
+interface ProjectCardProps {
+  title: string;
+  url: string;
+}
+
+function ProjectCard({ title, url }: ProjectCardProps) {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
